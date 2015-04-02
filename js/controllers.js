@@ -1,22 +1,14 @@
-angular.module('resourceApp', [])
-    .service('peernames', function () {
-        return [
-            {
-                name: 'Василий', 
-                variants: ['василий', 'вася', 'василий петрович', 'сторож'],
-                target: 'SIP/vasya'
-            },
-            {
-                name: 'Петр Григорьевич', 
-                variants: ['петр', 'петр григорьевич', 'директор'],
-                target: 'SIP/1234'
-            }
-        ];
-    })
-    .controller('resourceListController', function (peernames) {
+angular.module('resourceApp', ['ngResource'])
+    .factory("peernames", function ($resource) {
+        return $resource("/peernames.json");
+    })    
+    .controller('resourceListController', function ($scope, peernames) {
         var resourceList = this;
-        resourceList.resources = peernames;
-     
+
+        peernames.query(function (peers) {
+            resourceList.resources = peers;
+        });
+
         resourceList.addResource = function () {
             resourceList.resources.push({
                 name: resourceList.name, 
@@ -52,4 +44,5 @@ angular.module('resourceApp', [])
                 resourceList.resources[resourceIndex].variants.push(variant);
             });
         };
+        
     });
