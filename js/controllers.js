@@ -1,51 +1,55 @@
-angular.module('todoApp', [])
-  .service('peernames', function () {
-      return [
-          {
-              name: 'learn angular 1', 
-              variants: ['good', 'bad', 'ugly'],
-              target: 'Ololo'
-          },
-          {
-              name: 'learn angular 2', 
-              variants: ['good', 'bad', 'ugly'],
-              target: 'Trololo'
-          }
-      ];
-  })
-  .controller('TodoListController', function (peernames) {
-      var todoList = this;
-      todoList.todos = peernames;
-   
-      todoList.addTodo = function () {
-          todoList.todos.push({
-              name: todoList.name, 
-              target: todoList.target,
-              variants: [],
-              done: false              
-          });
-          todoList.name = '';
-          todoList.target = '';
-      };
+angular.module('resourceApp', [])
+    .service('peernames', function () {
+        return [
+            {
+                name: 'Василий', 
+                variants: ['василий', 'вася', 'артем'],
+                target: 'SIP/vasya'
+            },
+            {
+                name: 'Петр Григорьевич', 
+                variants: ['петр', 'петр григорьевич', 'директор'],
+                target: 'SIP/1234'
+            }
+        ];
+    })
+    .controller('resourceListController', function (peernames) {
+        var resourceList = this;
+        resourceList.resources = peernames;
+     
+        resourceList.addResource = function () {
+            resourceList.resources.push({
+                name: resourceList.name, 
+                target: resourceList.target,
+                variants: [
+                  resourceList.name.toLowerCase()
+                ]
+            });
+            resourceList.name = '';
+            resourceList.target = '';
+        };
 
-      todoList.addVariant = function (index) {
-          todoList.todos[index].variants.push(todoList.newVariant[index]);
-          todoList.newVariant[index] = '';
-      }; 
-   
-      todoList.remaining = function () {
-          var count = 0;
-          angular.forEach(todoList.todos, function (todo) {
-            count += todo.done ? 0 : 1;
-          });
-          return count;
-      };
-   
-      todoList.archive = function () {
-          var oldTodos = todoList.todos;
-          todoList.todos = [];
-          angular.forEach(oldTodos, function(todo) {
-              if (!todo.done) todoList.todos.push(todo);
-          });
-      };
-  });
+        resourceList.deleteResource = function (resourceIndex) {
+            var oldResources = resourceList.resources;
+            resourceList.resources = [];
+            delete oldResources[resourceIndex];
+            angular.forEach(oldResources, function (resource) {
+                resourceList.resources.push(resource);
+            });
+        };
+
+        resourceList.addVariant = function (resourceIndex) {
+            resourceList.resources[resourceIndex].variants.push(resourceList.newVariant[resourceIndex]);
+            resourceList.newVariant[resourceIndex] = '';
+        };
+
+        resourceList.deleteVariant = function (resourceIndex, variantIndex) {
+            var oldVariants = resourceList.resources[resourceIndex].variants;
+            peernames[resourceIndex].variants = [];
+            delete oldVariants[variantIndex];
+            angular.forEach(oldVariants, function (variant) {
+                resourceList.resources[resourceIndex].variants.push(variant);
+            });
+        };
+           
+    });

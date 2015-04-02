@@ -1,35 +1,39 @@
 <!doctype html>
-<html ng-app="todoApp">
+<html ng-app="resourceApp">
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script src="/js/controllers.js"></script>
-    <link rel="stylesheet" href="todo.css">
+    <link rel="stylesheet" href="resource.css">
   </head>
   <body>
-    <h2>Todo</h2>
-    <div ng-controller="TodoListController as todoList">
-      <span>{{todoList.remaining()}} of {{todoList.todos.length}} remaining</span>
-      [ <a href="" ng-click="todoList.archive()">archive</a> ]
+    <h2>Resource</h2>
+    <div ng-controller="resourceListController as resourceList">
+      <span>All {{resourceList.resources.length}} resources</span>      
       <ul class="unstyled">
-        <li ng-repeat="todo in todoList.todos">
-          <input type="checkbox" ng-model="todo.done">
-          <span>{{todo.name}}</span>
-          <span>{{todo.target}} {{$index}}</span>
+        <li ng-repeat="resource in resourceList.resources">
+          <input type="checkbox" ng-model="resource.done">
+          <span><b>{{resource.name}}</b></span>
+          <span>{{resource.target}} {{$index}}</span>
+          <span>variants: {{resource.variants.length}}</span>
+          <a href="" ng-click="resourceList.deleteResource($index)">del</a>
           <ul>
-            <li ng-repeat="variant in todo.variants track by $index">{{variant}}</li>
+            <li ng-repeat="variant in resource.variants track by $index">
+              {{variant}}
+              <a href="" ng-click="resourceList.deleteVariant($parent.$index,$index)">del</a>
+            </li>
           </ul>
-          <form ng-submit="todoList.addVariant($index)">
-              <input type="text" ng-model="todoList.newVariant[$index]" size="10"
-               placeholder="add new variant">
+          <form ng-submit="resourceList.addVariant($index)">
+              <input type="text" ng-model="resourceList.newVariant[$index]" size="10"
+               placeholder="variant">
               <input class="btn-primary" type="submit" value="add">
-          </form>    
+          </form>
         </li>
       </ul>
-      <form ng-submit="todoList.addTodo()">        
-        <input type="text" ng-model="todoList.name"  size="15"
-               placeholder="add new todo here">
-        <input type="text" ng-model="todoList.target"  size="15"
-               placeholder="add new todo here">
+      <form ng-submit="resourceList.addResource()">
+        <input type="text" ng-model="resourceList.name"  size="15"
+               placeholder="name">
+        <input type="text" ng-model="resourceList.target"  size="15"
+               placeholder="target">
         <input class="btn-primary" type="submit" value="add">
       </form>
     </div>
