@@ -3,7 +3,7 @@ angular.module('resourceApp', [])
         return [
             {
                 name: 'Василий', 
-                variants: ['василий', 'вася', 'артем'],
+                variants: ['василий', 'вася', 'василий петрович', 'сторож'],
                 target: 'SIP/vasya'
             },
             {
@@ -39,7 +39,8 @@ angular.module('resourceApp', [])
         };
 
         resourceList.addVariant = function (resourceIndex) {
-            resourceList.resources[resourceIndex].variants.push(resourceList.newVariant[resourceIndex]);
+            var newVariant = resourceList.newVariant[resourceIndex].toLowerCase();
+            resourceList.resources[resourceIndex].variants.push(newVariant);
             resourceList.newVariant[resourceIndex] = '';
         };
 
@@ -51,5 +52,4 @@ angular.module('resourceApp', [])
                 resourceList.resources[resourceIndex].variants.push(variant);
             });
         };
-           
     });

@@ -10,29 +10,30 @@
     <div ng-controller="resourceListController as resourceList">
       <span>All {{resourceList.resources.length}} resources</span>      
       <ul class="unstyled">
-        <li ng-repeat="resource in resourceList.resources">
-          <input type="checkbox" ng-model="resource.done">
+        <li ng-repeat="resource in resourceList.resources">        
           <span><b>{{resource.name}}</b></span>
-          <span>{{resource.target}} {{$index}}</span>
-          <span>variants: {{resource.variants.length}}</span>
+          <span>{{resource.target}}</span>
+          <span><a href='' ng-model="collapsed" ng-click="collapsed=!collapsed">variants: {{resource.variants.length}}</a></span>
           <a href="" ng-click="resourceList.deleteResource($index)">del</a>
-          <ul>
-            <li ng-repeat="variant in resource.variants track by $index">
-              {{variant}}
-              <a href="" ng-click="resourceList.deleteVariant($parent.$index,$index)">del</a>
-            </li>
-          </ul>
-          <form ng-submit="resourceList.addVariant($index)">
-              <input type="text" ng-model="resourceList.newVariant[$index]" size="10"
-               placeholder="variant">
-              <input class="btn-primary" type="submit" value="add">
-          </form>
+          <div ng-show="collapsed">
+            <ul>
+              <li ng-repeat="variant in resource.variants track by $index">
+                {{variant}}
+                <a href="" ng-click="resourceList.deleteVariant($parent.$index,$index)">del</a>
+              </li>
+            </ul>
+            <form ng-submit="resourceList.addVariant($index)">
+                <input type="text" ng-model="resourceList.newVariant[$index]" size="10"
+                 placeholder="variant">
+                <input class="btn-primary" type="submit" value="add">
+            </form>
+          </div>
         </li>
       </ul>
       <form ng-submit="resourceList.addResource()">
-        <input type="text" ng-model="resourceList.name"  size="15"
+        <input type="text" ng-model="resourceList.name" size="15"
                placeholder="name">
-        <input type="text" ng-model="resourceList.target"  size="15"
+        <input type="text" ng-model="resourceList.target" size="15"
                placeholder="target">
         <input class="btn-primary" type="submit" value="add">
       </form>
