@@ -1,6 +1,14 @@
 angular.module('resourceApp', ['ngResource'])
     .factory("peernames", function ($resource) {
-        return $resource("/peernames.json");
+        return $resource(
+            "/peernames.json", 
+            {},
+            {
+                saveData: {
+                    method: 'POST',
+                    isArray: true
+                }
+            });
     })    
     .controller('resourceListController', function ($scope, peernames) {
         var resourceList = this;
@@ -38,10 +46,18 @@ angular.module('resourceApp', ['ngResource'])
 
         resourceList.deleteVariant = function (resourceIndex, variantIndex) {
             var oldVariants = resourceList.resources[resourceIndex].variants;
-            peernames[resourceIndex].variants = [];
+            resourceList.resources[resourceIndex].variants = [];
             delete oldVariants[variantIndex];
             angular.forEach(oldVariants, function (variant) {
                 resourceList.resources[resourceIndex].variants.push(variant);
+            });
+        };
+
+        resourceList.save = function () {
+            peernames.saveData({}, resourceList.resources, function () {
+                peernames.query(function (peers) {
+                    resourceList.resources = peers;
+                });
             });
         };
         
