@@ -12,30 +12,31 @@ angular.module('resourceApp', ['ngResource'])
     })    
     .controller('resourceListController', function ($scope, peernames) {
         var resourceList = this;
+        resourceList.name = '';
+        resourceList.target = '';
 
         peernames.query(function (peers) {
             resourceList.resources = peers;
         });
 
         resourceList.addResource = function () {
-            resourceList.resources.push({
-                name: resourceList.name, 
-                target: resourceList.target,
-                variants: [
-                  resourceList.name.toLowerCase()
-                ]
-            });
-            resourceList.name = '';
-            resourceList.target = '';
+            if ((resourceList.name != '') && (resourceList.target != '')) {
+                resourceList.resources.push({
+                    name: resourceList.name, 
+                    target: resourceList.target,
+                    variants: [
+                      resourceList.name.toLowerCase()
+                    ]
+                });
+                resourceList.name = '';
+                resourceList.target = '';
+            }
         };
 
         resourceList.deleteResource = function (resourceIndex) {
-            var oldResources = resourceList.resources;
-            resourceList.resources = [];
-            delete oldResources[resourceIndex];
-            angular.forEach(oldResources, function (resource) {
-                resourceList.resources.push(resource);
-            });
+            if (confirm("Delete resource?")) {
+                resourceList.resources.splice(resourceIndex, 1);                
+            }            
         };
 
         resourceList.addVariant = function (resourceIndex) {
@@ -45,12 +46,9 @@ angular.module('resourceApp', ['ngResource'])
         };
 
         resourceList.deleteVariant = function (resourceIndex, variantIndex) {
-            var oldVariants = resourceList.resources[resourceIndex].variants;
-            resourceList.resources[resourceIndex].variants = [];
-            delete oldVariants[variantIndex];
-            angular.forEach(oldVariants, function (variant) {
-                resourceList.resources[resourceIndex].variants.push(variant);
-            });
+            if (confirm("Delete variant?")) {
+                resourceList.resources[resourceIndex].variants.splice(variantIndex, 1);                
+            }
         };
 
         resourceList.save = function () {
