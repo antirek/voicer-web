@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/antirek/voicer-web/issues"
   },
-  "homepage": "https://github.com/antirek/voicer-web"
+  "homepage": "https://github.com/antirek/voicer-web",
+  "dependencies": {
+    "node-simple-router": "^0.9.4-2"
+  }
 }
