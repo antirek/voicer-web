@@ -5,32 +5,43 @@ var fs = require('fs');
 
 var router = Router();
 
-router.get("/hello", function (request, response) {
-  response.end("Hello, World!");
-});
+var source = {
+  getData: function (callback) {
+    fs.readFile('peernames.json', callback);
+  },
+  saveData: function (data, callback) {
+    fs.writeFile('peernames.json', data, callback);
+  }
+};
 
-router.get("/peernames.json", function (request, response) {
-  fs.readFile('peernames.json', function (error, data) {
-    if(!error){
-      response.end(data);
-    }else{
-      response.end('error');
-    }
-  });
-});
-
-router.post("/peernames.json", function (request, response) {
-  console.log(request.post);
-  var data = JSON.stringify(request.post);  
-  fs.writeFile('peernames.json', data, function (err) {
-    if (!err){
-      response.end('ok');
-    }else{
-      response.end('fail');
-    }
-  });
+var Server = function (router, source) {
   
-});
-var server = http.createServer(router);
+  router.get("/peernames.json", function (request, response) {
+    source.getData(function (error, data) {
+      if (!error) {
+        response.end(data);
+      } else {
+        response.end('error');
+      }
+    });
+  });
 
-server.listen(3007);
+  router.post("/peernames.json", function (request, response) {
+    var data = JSON.stringify(request.post);  
+    source.saveData(data, function (error) {
+      if (!error) {
+        response.end('ok');
+      } else {
+        response.end('fail');
+      }
+    });    
+  });
+
+  this.start = function () {
+    http.createServer(router).listen(3007);
+  };
+  
+};
+
+var server = new Server(router, source);
+server.start();
