@@ -1,21 +1,12 @@
+'use strict';
 
 var http = require('http');
 var Router = require('node-simple-router');
-var fs = require('fs');
 
-var router = Router();
+var Server = function (source, config) {
 
-var source = {
-  getData: function (callback) {
-    fs.readFile('peernames.json', callback);
-  },
-  saveData: function (data, callback) {
-    fs.writeFile('peernames.json', data, callback);
-  }
-};
+  var router = Router({static_route: __dirname + "/public"});
 
-var Server = function (router, source) {
-  
   router.get("/peernames.json", function (request, response) {
     source.getData(function (error, data) {
       if (!error) {
@@ -27,21 +18,20 @@ var Server = function (router, source) {
   });
 
   router.post("/peernames.json", function (request, response) {
-    var data = JSON.stringify(request.post);  
+    var data = JSON.stringify(request.post);
     source.saveData(data, function (error) {
       if (!error) {
         response.end('ok');
       } else {
         response.end('fail');
       }
-    });    
+    });
   });
 
   this.start = function () {
-    http.createServer(router).listen(3007);
+    http.createServer(router).listen(config.port);
   };
-  
+
 };
 
-var server = new Server(router, source);
-server.start();
+module.exports = Server;
