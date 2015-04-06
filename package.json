@@ -1,6 +1,6 @@
 {
   "name": "voicer-web",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Voicer web configurator",
   "main": "index.js",
   "scripts": {

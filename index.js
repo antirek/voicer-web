@@ -21,7 +21,7 @@ var Server = function (source, config) {
   });
 
   router.post("/peernames.json", function (request, response) {
-    var data = JSON.stringify(request.post);
+    var data = JSON.stringify(request.post, null, '  ');
     source.saveData(data)
       .then(function () {
         response.end('ok');
