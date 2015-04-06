@@ -5,27 +5,30 @@ var Router = require('node-simple-router');
 
 var Server = function (source, config) {
 
-  var router = Router({static_route: __dirname + "/public"});
+  var router = Router({
+      static_route: __dirname + "/public",
+      logging: false
+  });
 
   router.get("/peernames.json", function (request, response) {
-    source.getData(function (error, data) {
-      if (!error) {
+    source.getData()
+      .then(function (data) {
         response.end(data);
-      } else {
-        response.end('error');
-      }
-    });
+      })
+      .fail(function (error) {
+        response.end(error);
+      });
   });
 
   router.post("/peernames.json", function (request, response) {
     var data = JSON.stringify(request.post);
-    source.saveData(data, function (error) {
-      if (!error) {
+    source.saveData(data)
+      .then(function () {
         response.end('ok');
-      } else {
-        response.end('fail');
-      }
-    });
+      })
+      .fail(function (error) {
+        response.end(error);
+      });
   });
 
   this.start = function () {

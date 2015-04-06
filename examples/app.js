@@ -1,9 +1,6 @@
 
 var Server = require('../index');
-var Router = require('node-simple-router');
 var fs = require('fs');
-
-//var router = Router();
 
 var source = {
   getData: function (callback) {
