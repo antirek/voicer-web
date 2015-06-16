@@ -1,13 +1,30 @@
 
 var Server = require('../index');
 var fs = require('fs');
+var Q = require('q');
 
 var source = {
-  getData: function (callback) {
-    fs.readFile('peernames.json', callback);
+  getData: function () {
+  	var defer = Q.defer();
+    fs.readFile('peernames.json', function (err, result){
+    	if (err) {
+    		defer.reject(err);
+    	} else { 
+    		defer.resolve(result);
+    	}
+    });
+    return defer.promise;
   },
   saveData: function (data, callback) {
-    fs.writeFile('peernames.json', data, callback);
+  	var defer = Q.defer();
+    fs.writeFile('peernames.json', data, function (err, result) {
+    	if (err) {
+    		defer.reject(err);
+    	} else { 
+    		defer.resolve(result);
+    	}
+    });
+    return defer.promise;
   }
 };
 

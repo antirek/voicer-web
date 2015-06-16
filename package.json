@@ -18,5 +18,8 @@
   "homepage": "https://github.com/antirek/voicer-web",
   "dependencies": {
     "node-simple-router": "^0.9.4-2"
+  },
+  "devDependencies": {
+    "q": "^1.4.1"
   }
 }

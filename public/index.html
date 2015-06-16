@@ -1,43 +1,70 @@
 <!doctype html>
 <html ng-app="resourceApp">
   <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.js"></script>
+    <script src="/jquery/dist/jquery.min.js"></script>
+    <script src="/angular/angular.min.js"></script>
+    <script src="/angular-resource/angular-resource.min.js"></script>
+    <script src="/bootstrap/dist/js/bootstrap.js"></script>
     <script src="/js/controllers.js"></script>
+    <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.css">
   </head>
   <body>
-    <h2>Resource</h2>
-    <div ng-controller="resourceListController as resourceList">
-      <span>All {{resourceList.resources.length}} resources</span>
-      <ul class="unstyled">
-        <li ng-repeat="resource in resourceList.resources"> 
-          <span><b>{{resource.name}}</b></span>
-          <span>{{resource.target}}</span>
-          <span><a href='' ng-model="collapsed" ng-click="collapsed=!collapsed">variants: {{resource.variants.length}}</a></span>
-          <a href="" ng-click="resourceList.deleteResource($index)">del</a>
-          <div ng-show="collapsed">
-            <ul>
-              <li ng-repeat="variant in resource.variants track by $index">
-                {{variant}}
-                <a href="" ng-click="resourceList.deleteVariant($parent.$index,$index)">del</a>
-              </li>
-            </ul>
+    <div class="container">
+      <div ng-controller="resourceListController as resourceList">
+        <h2>Resource
+          <small>All {{resourceList.resources.length}} resources</small>
+        </h2>
+        <a href='' ng-click="resourceList.save()" class="btn btn-primary btn-right">save</a>
+        <table class="unstyled table table-condensed">
+          <tr>
+            <th>name</th>
+            <th>target</th>
+            <th></th>
+            <th>variants</th>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr ng-repeat="resource in resourceList.resources"> 
+            <td><b>{{resource.name}}</b></td>
+            <td>{{resource.target}}</td>
+            <td>
+              <a href='' ng-model="collapsed" ng-click="collapsed=!collapsed">variants: {{resource.variants.length}}</a>
+            </td>
+            
+            <td>
+              <div ng-show="collapsed">
+                <table>
+                  <tr ng-repeat="variant in resource.variants track by $index">
+                    <td>{{variant}}</td>
+                    <td>
+                      <a href="" ng-click="resourceList.deleteVariant($parent.$index,$index)" class="btn btn-warning btn-xs">del</a>
+                    </td>
+                  </tr>
+                </table>
+                
+              </div>
+          </td>
+          <td>     
             <form ng-submit="resourceList.addVariant($index)">
-                <input type="text" ng-model="resourceList.newVariant[$index]" size="10"
-                 placeholder="variant">
-                <input class="btn-primary" type="submit" value="add">
+              <input type="text" ng-model="resourceList.newVariant[$index]" size="10"
+               placeholder="variant">
+              <input class="btn btn-primary btn-sm" type="submit" value="add">
             </form>
-          </div>
-        </li>
-      </ul>
-      <form ng-submit="resourceList.addResource()">
-        <input type="text" ng-model="resourceList.name" size="15"
-               placeholder="name">
-        <input type="text" ng-model="resourceList.target" size="15"
-               placeholder="target">
-        <input class="btn-primary" type="submit" value="add">
-      </form>
-      <a href='' ng-click="resourceList.save()">save</a>
+          </td>
+          <td>
+              <a href="" ng-click="resourceList.deleteResource($index)" class="btn btn-warning btn-sm">del</a>
+          </td>
+
+        </table>
+        <form ng-submit="resourceList.addResource()">
+          <input type="text" ng-model="resourceList.name" size="15"
+                 placeholder="name">
+          <input type="text" ng-model="resourceList.target" size="15"
+                 placeholder="target">
+          <input class="btn btn-primary" type="submit" value="add">
+        </form>
+        
+      </div>
     </div>
   </body>
 </html>
