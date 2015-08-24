@@ -29,7 +29,7 @@ var source = {
 };
 
 var config = {
-  port: 3007
+  port: 30011
 };
 
 var server = new Server(source, config);

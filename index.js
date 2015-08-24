@@ -2,8 +2,32 @@
 
 var http = require('http');
 var Router = require('node-simple-router');
+var auth = require('http-auth');
 
-var Server = function (source, config) {
+
+var Server = function (source, configIn) {
+
+  var config = {
+    port: configIn.port || 3007,
+    realm: configIn.realm || "voicer-web",
+    auth: configIn.auth || false,
+    username: configIn.username || "user",
+    password: configIn.password || "password"
+  };
+
+  var basic = auth.basic({
+        realm: config.realm
+    }, function (username, password, callback) { // Custom authentication method.
+        callback(username === config.username 
+          && password === config.password);
+    }
+  );
+
+  var authFunction = function (req, res) {
+    if (config.auth) {
+      basic();
+    };
+  };
 
   var router = Router({
       static_route: __dirname + "/public",
@@ -32,7 +56,7 @@ var Server = function (source, config) {
   });
 
   this.start = function () {
-    http.createServer(router).listen(config.port);
+    http.createServer(authFunction, router).listen(config.port);
   };
 
 };
