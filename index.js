@@ -9,25 +9,19 @@ var Server = function (source, configIn) {
 
   var config = {
     port: configIn.port || 3007,
-    realm: configIn.realm || "voicer-web",
-    auth: configIn.auth || false,
+    auth: configIn.auth || false,    
+    realm: configIn.realm || "voicer-web",    
     username: configIn.username || "user",
     password: configIn.password || "password"
   };
 
   var basic = auth.basic({
         realm: config.realm
-    }, function (username, password, callback) { // Custom authentication method.
+    }, function (username, password, callback) {
         callback(username === config.username 
           && password === config.password);
     }
-  );
-
-  var authFunction = function (req, res) {
-    if (config.auth) {
-      basic();
-    };
-  };
+  );  
 
   var router = Router({
       static_route: __dirname + "/public",
@@ -56,7 +50,11 @@ var Server = function (source, configIn) {
   });
 
   this.start = function () {
-    http.createServer(authFunction, router).listen(config.port);
+    if (config.auth) {
+      http.createServer(basic, router).listen(config.port);
+    } else {
+      http.createServer(router).listen(config.port);
+    }
   };
 
 };

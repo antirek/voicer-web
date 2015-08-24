@@ -29,7 +29,11 @@ var source = {
 };
 
 var config = {
-  port: 30011
+  port: 30011,
+  auth: true,
+  username: 'vasiliy',
+  password: 'test',
+  realm: 'Hello!'
 };
 
 var server = new Server(source, config);
