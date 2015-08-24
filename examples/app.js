@@ -6,7 +6,7 @@ var Q = require('q');
 var source = {
   getData: function () {
   	var defer = Q.defer();
-    fs.readFile('peernames.json', function (err, result){
+    fs.readFile('peernames.json', function (err, result) {
     	if (err) {
     		defer.reject(err);
     	} else { 
@@ -15,7 +15,7 @@ var source = {
     });
     return defer.promise;
   },
-  saveData: function (data, callback) {
+  saveData: function (data) {
   	var defer = Q.defer();
     fs.writeFile('peernames.json', data, function (err, result) {
     	if (err) {
