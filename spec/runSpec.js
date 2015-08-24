@@ -1,12 +1,9 @@
 
 var Server = require('../index');
-var fs = require('fs');
 var Q = require('q');
 var request = require('request');
 
-
 describe('voicer-web', function () {
-
   var peernames = [ 
     { 
       "name": "name",
@@ -42,6 +39,7 @@ describe('voicer-web', function () {
 
   it('not auth access', function (done) {
     var callback = function (err, response, body) {
+      expect(response.statusCode).toEqual(401);
       expect(body).toEqual('401 Unauthorized');
       done();
     }

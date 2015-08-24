@@ -1,6 +1,6 @@
 {
   "name": "voicer-web",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Voicer web configurator",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "url": "https://github.com/antirek/voicer-web.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/antirek/voicer-web/issues"
   },
