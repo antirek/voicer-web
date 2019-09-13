@@ -1,6 +1,7 @@
 <!doctype html>
 <html ng-app="resourceApp">
   <head>
+    <meta charset="utf-8">
     <script src="public/jquery/dist/jquery.min.js"></script>
     <script src="public/angular/angular.min.js"></script>
     <script src="public/angular-resource/angular-resource.min.js"></script>
@@ -12,10 +13,16 @@
   <body>
     <div class="container">
       <div ng-controller="resourceListController as resourceList">
-        <h2>Resource
-          <small>All {{resourceList.resources.length}} resources</small>
+        <h2>Voicer peernames.json online constructor
+          <small>{{resourceList.resources.length}} resources</small>
         </h2>
-        <a href='' ng-click="resourceList.save()" class="btn btn-primary btn-right">save</a>
+        <a href='' ng-click="resourceList.save()" class="btn btn-primary btn-right">save</a> 
+        <a href='' ng-click="resourceList.download()" class="btn btn-default">download</a> 
+        <a href='' ng-click="resourceList.clear()" class="btn btn-default">clear</a> 
+        <br>
+        <p>Заполните варианты. При сохранении данные сохраняются в локальном хранилище Вашего браузера. 
+          При загрузке вы получите готовый peernames.json для проекта <a href="https://github.com/antirek/voicer">voicer</a></p>
+        <br>
         <table class="unstyled table table-condensed">
           <tr>
             <th>name</th>

@@ -44,7 +44,35 @@ angular.module('resourceApp', ['LocalStorageModule'])
         };
 
         resourceList.save = function () {
-            localStorageService.set('peernames', JSON.stringify(resourceList.resources));            
+            localStorageService.set('peernames', JSON.stringify(resourceList.resources));
+            alert('saved');
         };
+
+        resourceList.clear = function () {
+            resourceList.resources = [];
+            localStorageService.set('peernames', '[]');
+            alert('storage cleared');
+        };
+
+        resourceList.download = function () {
+            function download(filename, text) {
+                var element = document.createElement('a');
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                element.setAttribute('download', filename);
+              
+                element.style.display = 'none';
+                document.body.appendChild(element);
+              
+                element.click();
+              
+                document.body.removeChild(element);
+            }
+            var copyResources = Object.assign([], resourceList.resources);            
+            var filteredResources = copyResources.map((item) => {
+                delete item['$$hashKey'];
+                return item;
+            })
+            download('peernames.json', JSON.stringify(filteredResources, null, 2))
+        }
         
     });
