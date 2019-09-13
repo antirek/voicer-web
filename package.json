@@ -4,6 +4,7 @@
   "description": "Voicer web configurator",
   "main": "index.js",
   "scripts": {
+    "start": "node app",
     "test": "jasmine"
   },
   "repository": {
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/antirek/voicer-web",
   "dependencies": {
+    "angular-local-storage": "^0.7.1",
     "http-auth": "^2.2.8",
     "node-simple-router": "0.10.1"
   },

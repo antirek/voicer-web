@@ -1,23 +1,15 @@
-angular.module('resourceApp', ['ngResource'])
-    .factory("peernames", function ($resource) {
-        return $resource(
-            "/peernames.json", 
-            {},
-            {
-                saveData: {
-                    method: 'POST',
-                    isArray: true
-                }
-            });
-    })    
-    .controller('resourceListController', function ($scope, peernames) {
+angular.module('resourceApp', ['LocalStorageModule'])
+    .config(function (localStorageServiceProvider) {
+        localStorageServiceProvider.setPrefix('resourceApp');1
+    })          
+    .controller('resourceListController', function ($scope, localStorageService) {
         var resourceList = this;
         resourceList.name = '';
         resourceList.target = '';
+        resourceList.resources = [];
 
-        peernames.query(function (peers) {
-            resourceList.resources = peers;
-        });
+        var data = JSON.parse(localStorageService.get('peernames'));
+        if (data) { resourceList.resources = data; }
 
         resourceList.addResource = function () {
             if ((resourceList.name != '') && (resourceList.target != '')) {
@@ -52,11 +44,7 @@ angular.module('resourceApp', ['ngResource'])
         };
 
         resourceList.save = function () {
-            peernames.saveData({}, resourceList.resources, function () {
-                peernames.query(function (peers) {
-                    resourceList.resources = peers;
-                });
-            });
+            localStorageService.set('peernames', JSON.stringify(resourceList.resources));            
         };
         
     });
