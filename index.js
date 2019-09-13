@@ -8,7 +8,7 @@ class Server  {
 
   start () {
     var router = Router({
-      static_route: __dirname + "/public",
+      static_route: __dirname,
       logging: false
     });
 
